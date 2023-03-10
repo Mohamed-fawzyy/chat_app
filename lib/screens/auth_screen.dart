@@ -15,6 +15,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
   bool _isLoading = false;
+
   void _submitAuthForm(
     String userName,
     String email,
@@ -28,14 +29,15 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = true;
       });
-
       if (isLogin == AuthMode.login) {
         userCred = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
       } else {
         userCred = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-        FirebaseFirestore.instance
+          email: email,
+          password: password,
+        );
+        await FirebaseFirestore.instance
             .collection('users')
             .doc(userCred.user!.uid)
             .set({
@@ -45,16 +47,18 @@ class _AuthScreenState extends State<AuthScreen> {
         });
       }
     } on FirebaseAuthException catch (err) {
+      print(err);
       setState(() {
         _isLoading = false;
       });
-      var msg = 'an error occured please check your credentials';
+      String msg = 'an error occured please check your credentials';
       if (err.message != null) {
         msg = err.message!;
       }
       ScaffoldMessenger.of(ctx).showSnackBar(
         SnackBar(
           content: Text(msg),
+          duration: const Duration(seconds: 8),
           backgroundColor: Theme.of(ctx).colorScheme.error,
         ),
       );
@@ -71,7 +75,9 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: AuthForm(
-          _submitAuthForm, _isLoading), // we passing it here as a pointer of fn
+        _submitAuthForm,
+        _isLoading,
+      ), // we passing it here as a pointer of fn
     );
   }
 }

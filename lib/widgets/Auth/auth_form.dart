@@ -19,8 +19,8 @@ enum AuthMode { signup, login }
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  AuthMode _authMode = AuthMode.login;
 
+  AuthMode _authMode = AuthMode.login;
   String _email = '';
   String _username = '';
   String _password = '';
@@ -83,7 +83,7 @@ class _AuthFormState extends State<AuthForm> {
                       _email = newValue!;
                     },
                   ),
-                  if (_authMode == AuthMode.login)
+                  if (_authMode != AuthMode.login)
                     TextFormField(
                       key: const ValueKey('Usernamee'),
                       validator: (value) {
@@ -121,13 +121,13 @@ class _AuthFormState extends State<AuthForm> {
                     ElevatedButton(
                       onPressed: _submit,
                       child: Text(
-                          _authMode == AuthMode.login ? 'Signup' : 'Login'),
+                          _authMode == AuthMode.login ? 'Login' : 'Sign up'),
                     ),
                   TextButton(
                     onPressed: _switchAuthMode,
                     child: Text(_authMode == AuthMode.login
-                        ? 'I already have an account'
-                        : 'Create new account'),
+                        ? 'Create new account'
+                        : 'I already have an account'),
                   ),
                 ],
               ),
