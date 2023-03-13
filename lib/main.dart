@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
             .copyWith(background: Colors.green)
-            .copyWith(secondary: const Color.fromARGB(255, 97, 193, 13)),
+            .copyWith(secondary: const Color.fromARGB(198, 93, 192, 6)),
         buttonTheme: ButtonTheme.of(context).copyWith(
           buttonColor: Colors.green,
           textTheme: ButtonTextTheme.primary,
